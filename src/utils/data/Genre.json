@@ -1,0 +1,12 @@
+{
+  "data": [
+    {"name": "Rock", "color": "#3d4c6c"},
+    {"name": "Chill", "color": "#532347"},
+    {"name": "upbeat", "color": "#4f284b"},
+    {"name": "intense", "color": "#385461"},
+    {"name": "provoking", "color": "#6d523b"},
+    {"name": "Classic", "color": "#3d4c6c"},
+    {"name": "Hot", "color": "#532347"},
+    {"name": "Working", "color": "#385461"}
+  ]
+}
