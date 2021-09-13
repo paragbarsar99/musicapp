@@ -31,6 +31,7 @@ export function TrackScreen({ route }) {
     const stickyArray = [0];
     const headingRange = [230, 280];
     const shuffleRange = [40, 80];//pixel 
+    const shuffleRangeForLinearColor = [40,280];//pixel 
 
     const opacityHeading = scrollY.interpolate({
         inputRange: headingRange,
@@ -41,6 +42,12 @@ export function TrackScreen({ route }) {
     const opacityShuffle = scrollY.interpolate({
         inputRange: shuffleRange,
         outputRange: [0, 1],
+        extrapolate: 'clamp'
+    });
+
+    const opacityShuffleLinearColor = scrollY.interpolate({
+        inputRange: shuffleRangeForLinearColor,
+        outputRange: [1,0],
         extrapolate: 'clamp'
     });
 
@@ -69,7 +76,7 @@ export function TrackScreen({ route }) {
                         cover_image={artwork}
                         artistname={user}
                         color={color}
-
+                        opacityShuffler={opacityShuffleLinearColor}
                     />
 
                     {/* here's we start scrollview and  */}

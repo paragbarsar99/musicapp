@@ -14,11 +14,12 @@ export function LoadingScreen() {
         TrackPlayer.getState().then(Res => {
             dispatch(InitialValueOfSetupPlayerAction(Res))
         })
+  
     }, [])
 
     return (
         <View>
-         <StatusBar backgroundColor="black"/>
+            <StatusBar backgroundColor="black" />
             <Image source={require('../assets/images/musicbackground.png')} style={styles.backImage} />
         </View>
     )

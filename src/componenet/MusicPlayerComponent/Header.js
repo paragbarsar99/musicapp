@@ -12,6 +12,7 @@ import { useNavigation } from '@react-navigation/native';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons'
 import Entypo from 'react-native-vector-icons/Entypo'
 import { useSelector } from 'react-redux';
+
 const width = Dimensions.get("window").width
 
 export const Header = () => {
@@ -21,6 +22,7 @@ export const Header = () => {
 
     const Navigation = useNavigation()
     
+
     return (
         <View style={styles.container}>
             <TouchableOpacity onPress={() => Navigation.pop()} style={styles.lowerArrow} activeOpacity={0.7}>
@@ -35,7 +37,7 @@ export const Header = () => {
                             id: Playing.data.id,
                             cover_image: Playing.data.cover_image,
                             playlist_name: Playing.data.playlist_name,
-                            artistname: Playing.data.artist
+                            artistname: Playing.data.artistname
                         })
                         :
                         Playing.data.is_Track ?
@@ -50,7 +52,7 @@ export const Header = () => {
                             Navigation.navigate("ArtistSongScreen", {
                                 id: Playing.data.id,
                                 cover_image: Playing.data.cover_image,
-                                artistname: Playing.data.artist
+                                artist_name: Playing.data.artistname
                             })
                 }}>
                     {Playing.data.is_album ?

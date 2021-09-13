@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { StyleSheet, View,Alert } from 'react-native';
+import { StyleSheet, View, Alert } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native'
 import { createMaterialBottomTabNavigator } from '@react-navigation/material-bottom-tabs';
 import { createStackNavigator } from '@react-navigation/stack'
@@ -21,7 +21,7 @@ import {
   TrackScreen,
   CompactController
 } from './common/screens'
-import { useNetInfo, addEventListener } from '@react-native-community/netinfo';
+
 
 const Tab = createMaterialBottomTabNavigator()
 const StackTab = createStackNavigator();
@@ -106,49 +106,47 @@ function Home() {
 
 
   const [Loading, setLoading] = useState(true)
-  
+
   setTimeout(() => {
     setLoading(false)
   }, 2000)
 
   if (Loading) return <LoadingScreen />
 
- 
+  return (
+    <Tab.Navigator
+      screenOptions={() => {
 
-    return (
-      <Tab.Navigator
-        screenOptions={() => {
+      }}
+      activeColor="#FFFFFF"
+      barStyle={styles.container}
 
+    >
+      <Tab.Screen
+        name="Albumwork"
+        component={AlbumWork}
+        options={{
+          tabBarLabel: "Home",
+          tabBarIcon: ({ color }) => (
+            <Foundation name="home" color={color} size={28} />
+          )
+        }
+        }
+      />
+
+      <Tab.Screen
+        name="SearchTabs"
+        component={SearchTabs}
+        options={{
+          tabBarLabel: "Search",
+          tabBarIcon: ({ color }) => (
+            <EvilIcons name="search" color={color} size={28} />
+          )
         }}
-        activeColor="#FFFFFF"
-        barStyle={styles.container}
+      />
 
-      >
-        <Tab.Screen
-          name="Albumwork"
-          component={AlbumWork}
-          options={{
-            tabBarLabel: "Home",
-            tabBarIcon: ({ color }) => (
-              <Foundation name="home" color={color} size={28} />
-            )
-          }
-          }
-        />
-
-        <Tab.Screen
-          name="SearchTabs"
-          component={SearchTabs}
-          options={{
-            tabBarLabel: "Search",
-            tabBarIcon: ({ color }) => (
-              <EvilIcons name="search" color={color} size={28} />
-            )
-          }}
-        />
-
-      </Tab.Navigator>
-    )
+    </Tab.Navigator>
+  )
 }
 
 const globalStackTab = createStackNavigator()
@@ -199,7 +197,7 @@ const styles = StyleSheet.create({
 
   container: {
     backgroundColor: '#302C2C',
-    height:48  
+    height: 48
   }
 
 })

@@ -41,7 +41,7 @@ const SearchInitialResult = {
         albums: [],
         tracks: []
     },
-    error: "Something Went wrong"
+    error: "something went wrong"
 }
 
 const initialValueOfSetupPlayer = null;

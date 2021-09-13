@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { View, Text, StyleSheet, Image, Dimensions, ScrollView, FlatList, TouchableOpacity } from 'react-native'
+import { View, Text, StyleSheet, Image, Dimensions, ScrollView, FlatList, TouchableOpacity, Platform } from 'react-native'
 import { SearchBar } from 'react-native-elements'
 import { useFocusEffect, useNavigation } from '@react-navigation/native'
 import Fontisto from 'react-native-vector-icons/Fontisto'
@@ -12,7 +12,7 @@ export function SearchScreen_1() {
 
     //state for Access Search value 
     const [SearchValue, setSearchValue] = useState("")
-    const [isLoading, setisLoading] = useState(true)
+    const [isLoading, setisLoading] = useState(false)
 
     const dispatch = useDispatch()
 
@@ -22,10 +22,6 @@ export function SearchScreen_1() {
 
     const { users, tracks, playlists, albums } = data
 
-    // console.log(JSON.stringify(users) + " users")
-    // console.log(albums.length + " albums ")
-    // console.log(playlists.length + " pL")
-    // console.log(tracks.length + " tracks")
 
     //initanse of navigation hook
     const Navigation = useNavigation()
@@ -40,16 +36,12 @@ export function SearchScreen_1() {
     }, [])
 
     //dispatch a action when ever searchValue get changed
-    React.useEffect(() => {
+    function MakeARquest() {
         if (SearchValue != "") {
             dispatch(SearchResultAction(SearchValue, Name))
             setisLoading(true)
-        } else {
-            setisLoading(false)
         }
-
-    }, [SearchValue])
-
+    }
 
 
 
@@ -74,7 +66,9 @@ export function SearchScreen_1() {
                     animating: isLoading,
                     color: "white",
                 }}
-                onClear={() => setSearchValue("")}
+                onClear={() => { setSearchValue(""),setisLoading(false) }}
+                onEndEditing={() => MakeARquest()}
+
             />
 
             <View>
@@ -97,7 +91,7 @@ export function SearchScreen_1() {
 
                                                 })
                                             }
-                                            
+
                                         }}>
                                             <View style={styles.artistContainer}>
                                                 {

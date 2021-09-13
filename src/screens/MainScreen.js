@@ -5,6 +5,7 @@ import {
   StatusBar,
   Dimensions,
   Text,
+  Alert,
 } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 import { ListItem, Top10Artist } from '../componenet/index'
@@ -13,6 +14,7 @@ import { ScrollView, TouchableOpacity } from 'react-native-gesture-handler';
 import { ActivityIndicator } from 'react-native-paper';
 import { CompactController } from './CompactController';
 import { STATE_STOPPED } from 'react-native-track-player';
+import NetInfo from "@react-native-community/netinfo";
 
 const height = Dimensions.get("window").height
 const width = Dimensions.get("window").width
@@ -33,24 +35,30 @@ export const MainScreen = () => {
 
   React.useEffect(() => {
     RequsetForData()
+    const unsubscribe = NetInfo.addEventListener(state => {
+      console.log("Connection type", state.type);
+      console.log("Is connected?", state.isConnected);
+      setConnection(state.isConnected)
+    });
+    console.log("i renderd");
   }, [])
 
-  console.log(Tracks.error);
+  console.log(Connection);
+
+
 
   //check id network error occured
-  const NetworkError = () => (
-    <View style={{ marginTop: width /1, alignSelf: "center", }}>
-      <Text style={{ fontSize: 24, color: "white", alignSelf: "center" }}>Check Your Internet Connection</Text>
-      <View style={{ height: 110, width: 110, alignSelf: "center" }}>
-        <TouchableOpacity activeOpacity={0.7} style={{ borderWidth: 2, backgroundColor: "green", borderRadius: 20 }} onPress={() => RequsetForData()}>
-          <Text style={{ fontSize: 24, color: "white", alignSelf: "center" }}>Retry</Text>
-        </TouchableOpacity>
-      </View>
-    </View>
-  )
-
-
-
+  const NetworkError = () => {
+    Alert.alert(
+      'Something Went Wrong',
+      'Check Your Internet Connection',
+      [
+        { text: 'Cancel', onPress: () => console.log('Cancel Pressed'), style: 'cancel' },
+        { text: 'OK', onPress: () => RequsetForData() },
+      ],
+      { cancelable: true }
+    )
+  }
 
   return (
     <View style={styles.container}>
@@ -78,9 +86,12 @@ export const MainScreen = () => {
 
         </>
         :
-        Tracks.error != null && Tracks.error != 'something went wrong' 
+        Tracks.error != null && Tracks.error != "something went wrong"
           ?
-            NetworkError()
+          <>
+            {NetworkError()}
+            <ActivityIndicator size="large" color="green" style={{ alignSelf: "center", marginTop: height / 2 }} />
+          </>
           :
           <ActivityIndicator size="large" color="green" style={{ alignSelf: "center", marginTop: height / 2 }} />
       }
@@ -90,7 +101,7 @@ export const MainScreen = () => {
           :
           <CompactController />
       }
-    </View>
+    </View >
   );
 };
 
