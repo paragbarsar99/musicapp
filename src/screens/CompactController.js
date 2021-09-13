@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from 'react'
+import React, { useState, useEffect, useCallback,useMemo } from 'react'
 import { TouchableOpacity } from 'react-native'
 import { StyleSheet, Text, View, Image } from 'react-native'
 import Slider from '@react-native-community/slider'
@@ -71,12 +71,12 @@ export function CompactController() {
                     dispatch(InitialValueOfSetupPlayerAction(STATE_STOPPED));
                     TrackPlayer.destroy()
                 }
-                
-                if(event.type === TrackPlayerEvents.PLAYBACK_QUEUE_ENDED){
+
+                if (event.type === TrackPlayerEvents.PLAYBACK_QUEUE_ENDED) {
                     dispatch(InitialValueOfSetupPlayerAction(STATE_STOPPED));
                 }
 
-               } catch (error) {
+            } catch (error) {
                 console.error(`Error Inside useTrackPlayerEvent is: ${error}`);
             }
         },
@@ -138,18 +138,16 @@ export function CompactController() {
         dispatch(WhereIsSeekBarAction({ isSeeking: false, slidingValue: value, position: position, duration: duration }));
     };
 
-    //useEffect when ever current Track position change
+    //when ever current Track position change
+    useMemo(
+        () => {
+            if (!isSeeking && duration && position) {
+                dispatch(WhereIsSeekBarAction({ slidingValue: position / duration, position: position, duration: duration }));
+            }
+        }, [position, duration]
 
-    useFocusEffect(
-        useCallback(
-            () => {
-                if (!isSeeking && duration && position) {
-                    dispatch(WhereIsSeekBarAction({ slidingValue: position / duration, position: position, duration: duration }));
-                }
-            }, [position, duration]
-
-        )
     )
+
 
     //initalLanuch effect
     useEffect(async () => {
@@ -158,7 +156,7 @@ export function CompactController() {
             dispatch(SetupPlayer())
         }
 
-        // //get current playing song's credentials
+        //get current playing song's credentials
         await TrackPlayer.getCurrentTrack()
             .then(async res => {
                 if (!res) return null;
@@ -254,7 +252,7 @@ export function CompactController() {
 
 const styles = StyleSheet.create({
     container: {
-        height:50,
+        height: 50,
         width: "100%",
         backgroundColor: "black",
         bottom: 0,
@@ -275,7 +273,7 @@ const styles = StyleSheet.create({
         alignSelf: "center",
         fontSize: 18,
         marginLeft: 10,
-        padding:10
+        padding: 10
 
     },
     progressBar: {

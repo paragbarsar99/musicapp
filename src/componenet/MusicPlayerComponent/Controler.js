@@ -21,7 +21,7 @@ export const Controler = ({ state }) => {
 
                 {state === STATE_BUFFERING ?
                     <TouchableOpacity activeOpacity={0.7} >
-                        <ActivityIndicator size={50} color="green" style={{ justifyContent: "space-around" }} />
+                        <ActivityIndicator size={50} color="green" style={{ justifyContent: "space-evenly" }} />
                     </TouchableOpacity>
                     :
                     <>

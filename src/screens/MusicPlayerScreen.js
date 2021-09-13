@@ -14,15 +14,16 @@ import { useFocusEffect } from '@react-navigation/native';
 import Entypo from 'react-native-vector-icons/Entypo'
 import AntDesign from 'react-native-vector-icons/AntDesign'
 
-export function MusicPlayerScreen({ route }) {
+export function MusicPlayerScreen() {
 
     //getting params from compactController Screeen 
 
     const { Obj, SetupPlayerValue, Playing, SeekBar } = useSelector(item => item);
 
+    //get the current position of track   
     const { position, duration } = useTrackPlayerProgress();
 
-    let { slidingValue, isSeeking } = SeekBar
+    let { slidingValue } = SeekBar
     //redux instance for dispathc action
     const dispatch = useDispatch()
 
@@ -37,18 +38,7 @@ export function MusicPlayerScreen({ route }) {
         dispatch(WhereIsSeekBarAction({ isSeeking: false, slidingValue: value, position: position, duration: duration }));
     };
 
-    useFocusEffect(
-        useCallback(
-            () => {
-                if (!isSeeking && duration && position) {
-                    dispatch(WhereIsSeekBarAction({ slidingValue: position / duration, position: position, duration: duration }));
-                }
-            }, [position, duration]
-
-        )
-    )
-
-
+  
     return (
         <View style={[styles.container]}>
 
