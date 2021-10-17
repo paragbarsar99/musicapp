@@ -25,13 +25,13 @@ const initialObj = {
     title: "Title",
     artwork: "https://creatornode2.audius.co/ipfs/QmVKTpZKnG59vmUvNZakNKHKcvarSc42vAwE3VbvA3QNQi/480x480.jpg",
     artist: "Artist",
+    duration:100
 };
 
 const initialSeekbar = {
     isSeeking: false,
     slidingValue: 0,
-    position: 0,
-    duration: 0
+
 }
 
 const SearchInitialResult = {

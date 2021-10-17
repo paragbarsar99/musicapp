@@ -1,30 +1,22 @@
 import React from 'react'
 import { StyleSheet, Text, View, Dimensions } from 'react-native'
-import { useNavigation } from '@react-navigation/native'
 import { TouchableOpacity } from 'react-native'
 
-const height = Dimensions.get("window").height
-const width = Dimensions.get("window").width
+const {height,width }= Dimensions.get("window")
 
 
 export function TrackDetails({ songname, artistname, Playing }) {
 
-    const Navigation = useNavigation()
 
     return (
 
         <TouchableOpacity activeOpacity={0.7} onPress={() => {
-              
+
         }}>
             <View style={styles.container}>
-                <Text style={styles.songname}>{songname} </Text>
+                <Text style={styles.songname} numberOfLines={2}>{songname} </Text>
                 <Text style={styles.artistname}>{artistname}</Text>
-              
-              {/* <View >
-              <AntDesign name="heart" size={20} style={{ right: 8, position: "absolute", marginTop: 20 }} />
-                
 
-              <View/> */}
             </View>
         </TouchableOpacity>
     )
@@ -32,16 +24,21 @@ export function TrackDetails({ songname, artistname, Playing }) {
 
 const styles = StyleSheet.create({
     container: {
-        alignSelf: "flex-start",
         marginLeft: 3,
-        marginTop: height / 18
+        marginTop: height / 18,
+        left: 2,
+        alignItems: "flex-start",
+        height:50,
+        width:width,
+        justifyContent:"center"
     },
     songname: {
         color: "white",
         fontWeight: "bold",
-        fontSize: 23,
+        fontSize: 18,
         textTransform: "capitalize",
         padding: 2
+
     },
     artistname: {
         color: "gray",

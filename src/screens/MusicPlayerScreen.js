@@ -1,44 +1,32 @@
 import React, { useEffect, useState, useCallback } from 'react';
-import { StyleSheet, View, } from 'react-native';
+import { StyleSheet, View, Dimensions } from 'react-native';
 import {
     AlbumArt,
     Header,
     SliderComponent,
     Controler,
     TrackDetails,
+
 } from '../componenet/MusicPlayerComponent/index';
-import { useSelector, useDispatch } from 'react-redux';
-import { WhereIsSeekBarAction } from '../Actions';
+import { useSelector } from 'react-redux';
 import TrackPlayer, { useTrackPlayerProgress } from 'react-native-track-player';
-import { useFocusEffect } from '@react-navigation/native';
-import Entypo from 'react-native-vector-icons/Entypo'
-import AntDesign from 'react-native-vector-icons/AntDesign'
+
+const { height, width } = Dimensions.get("window")
 
 export function MusicPlayerScreen() {
 
     //getting params from compactController Screeen 
 
-    const { Obj, SetupPlayerValue, Playing, SeekBar } = useSelector(item => item);
+    const { Obj: { duration, artwork, title, artist }, SetupPlayerValue, Playing } = useSelector(item => item);
 
     //get the current position of track   
-    const { position, duration } = useTrackPlayerProgress();
-
-    let { slidingValue } = SeekBar
-    //redux instance for dispathc action
-    const dispatch = useDispatch()
-
-    //whenUserStatrSlidnig
-    function slidingStarted() {
-        dispatch(WhereIsSeekBarAction({ isSeeking: true, position: position, duration: duration }));
-    }
+    const { position } = useTrackPlayerProgress();
 
     //this function is called when the user stops sliding the seekbar
     const slidingCompleted = async value => {
         await TrackPlayer.seekTo(value * duration);
-        dispatch(WhereIsSeekBarAction({ isSeeking: false, slidingValue: value, position: position, duration: duration }));
     };
 
-  
     return (
         <View style={[styles.container]}>
 
@@ -46,25 +34,20 @@ export function MusicPlayerScreen() {
 
             <AlbumArt
                 img={
-                    Obj.artwork
+                    artwork
                 }
             />
 
 
             <TrackDetails
-                songname={Obj.title}
-                artistname={Obj.artist}
+                songname={title}
+                artistname={artist}
                 Playing={Playing}
             />
 
-            <View style={{ flexDirection: "row", right: 5, position: "absolute", justifyContent: "space-between", width: 70, height: 70, }}>
-                <AntDesign name="hearto" size={22} color="white" style={{ marginTop: 20, backfaceVisibility: 'visible' }} />
-                <Entypo name="dots-three-vertical" size={20} color="white" style={{ marginTop: 20 }} />
-            </View>
+          
 
             <SliderComponent
-                slidingValue={slidingValue}
-                slidingStarted={slidingStarted}
                 slidingCompleted={slidingCompleted}
                 position={position}
                 duration={duration}
@@ -81,8 +64,10 @@ export function MusicPlayerScreen() {
 
 const styles = StyleSheet.create({
     container: {
-        height: '100%',
-        width: '100%',
+        height: height,
+        width: width,
         backgroundColor: 'black',
+        flex: 1,
+        justifyContent: "center"
     },
 });

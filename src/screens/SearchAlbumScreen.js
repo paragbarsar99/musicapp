@@ -1,43 +1,34 @@
 import React, { useEffect, useState, useRef } from 'react'
-import { View, Image, Text, StyleSheet, FlatList, TouchableOpacity, Dimensions, Animated } from 'react-native'
+import { View, Image, Text, StyleSheet, TouchableOpacity, Dimensions, Animated } from 'react-native'
 import { useNavigation } from '@react-navigation/native'
 import { useSelector, useDispatch } from 'react-redux';
 import { SongByGenreAction } from '../Actions';
 import { ActivityIndicator } from 'react-native-paper';
-import { LinearGradientColor } from '../componenet/index'
-import colors from '../constants/colors';
 
-const height = Dimensions.get("window").height
-const width = Dimensions.get("screen").width
+
+const { height, width } = Dimensions.get("window")
 
 export const SearchAlbumScreen = ({ route }) => {
 
     //get the params form route.screen 
-    const { Pname, color } = route.params
+    const { Pname } = route.params
 
     //storing Animated Object value in useRef
     const scrollY = useRef(new Animated.Value(0)).current
 
     const [isLoading, setisLoading] = useState(true)
 
-    //redux instace
+    //redux instance
     const dispatch = useDispatch()
 
     const { Genre } = useSelector(state => state)
-
 
     //intanse of navigation 
     const Navigation = useNavigation()
 
 
-    const headingRange = [130, 180];
-    const shuffleRange = [40, 80];//pixel 
+    const shuffleRange = [40, 80];//pixel value
 
-    const opacityHeading = scrollY.interpolate({
-        inputRange: headingRange,
-        outputRange: [0, 1],
-        extrapolate: 'clamp'
-    });
 
     const opacityShuffle = scrollY.interpolate({
         inputRange: shuffleRange,
@@ -46,7 +37,7 @@ export const SearchAlbumScreen = ({ route }) => {
     });
 
     useEffect(() => {
-        //dispath a action for every playlist name
+        // dispath a action for every playlist name
         dispatch(SongByGenreAction(Pname))
         setTimeout(() => {
             setisLoading(false)
@@ -54,7 +45,25 @@ export const SearchAlbumScreen = ({ route }) => {
 
     }, [Pname])
 
+    function MoveToAlbum(item) {
+        const prop = {
+            id: item.id,
+            playlist_name: item.playlist_name,
+            artistname: item.user.name,
+        }
 
+        if (item.artwork) {
+            Navigation.navigate("GenreSongScreen", {
+                ...prop,
+                cover_image: item.artwork["150x150"]
+            })
+        } else {
+            Navigation.navigate("GenreSongScreen", {
+                ...prop,
+               
+            })
+        }
+    }
     const PopulerListTitle = () => (
         <Text style={styles.itemText} numberOfLines={1}>Populer Playlist's</Text>
     )
@@ -64,7 +73,7 @@ export const SearchAlbumScreen = ({ route }) => {
 
         <>
             <Animated.View style={[styles.headerTitle, { opacity: opacityShuffle }]}>
-                <Text style={{fontWeight:'bold',fontSize:18,color:"white"}} numberOfLines={1}>Populer Playlist's in {Pname}</Text>
+                <Text style={{ fontWeight: 'bold', fontSize: 18, color: "white" }} numberOfLines={1}>Populer Playlist's in {Pname}</Text>
             </Animated.View>
         </>
     )
@@ -84,25 +93,26 @@ export const SearchAlbumScreen = ({ route }) => {
             data={Genre.data}
             keyExtractor={item => item.id}
             renderItem={({ item }) => (
-                <TouchableOpacity activeOpacity={0.7} onPress={() => {
-                    Navigation.navigate("GenreSongScreen", {
-                        id: item.id,
-                        playlist_name: item.playlist_name,
-                        artistname: item.user.name,
-                        cover_image: item.artwork["150x150"],
-                        color
-                    })
-                }
-                }>
-
+                <TouchableOpacity activeOpacity={0.7} onPress={() => MoveToAlbum(item)}>
                     <View style={styles.imageContainer}>
-                        <Image
-                            source={{
-                                uri: item.artwork['150x150'] || "https://cdn6.f-cdn.com/contestentries/1485199/27006121/5ca3e39ced7f1_thumb900.jpg"
-                            }}
-                            style={styles.itemPhoto}
-                            resizeMode="contain"
-                        />
+                        {
+                            !item.artwork
+                                ?
+                                <Image
+                                    source={require('../assets/images/rock.png')}
+                                    style={styles.itemPhoto}
+                                    resizeMode="contain"
+                                />
+                                :
+                                <Image
+                                    source={{
+                                        uri: item.artwork['150x150']
+                                    }}
+                                    style={styles.itemPhoto}
+                                    resizeMode="contain"
+                                />
+
+                        }
                     </View>
                     <View style={{ alignSelf: "center", width: 150, }}>
                         <Text style={styles.playlistname} numberOfLines={1}>{item.playlist_name} </Text>
@@ -208,7 +218,7 @@ const styles = StyleSheet.create({
         marginTop: 10,
         paddingHorizontal: 10,
         alignSelf: "center",
-        padding:10 
+        padding: 10
     },
     containerLinear: {
         position: 'absolute',
@@ -218,3 +228,16 @@ const styles = StyleSheet.create({
     },
 
 })
+
+// import React from 'react'
+// import { StyleSheet, Text, View } from 'react-native'
+
+// export  function SearchAlbumScreen() {
+//     return (
+//         <View>
+//             <Text>helloe</Text>
+//         </View>
+//     )
+// }
+
+// const styles = StyleSheet.create({})

@@ -14,14 +14,12 @@ import { ScrollView, TouchableOpacity } from 'react-native-gesture-handler';
 import { ActivityIndicator } from 'react-native-paper';
 import { CompactController } from './CompactController';
 import { STATE_STOPPED } from 'react-native-track-player';
-import NetInfo from "@react-native-community/netinfo";
 
 const height = Dimensions.get("window").height
 const width = Dimensions.get("window").width
 
 export const MainScreen = () => {
 
-  const [Connection, setConnection] = useState(true)
 
   const dispatch = useDispatch();
 
@@ -35,15 +33,8 @@ export const MainScreen = () => {
 
   React.useEffect(() => {
     RequsetForData()
-    const unsubscribe = NetInfo.addEventListener(state => {
-      console.log("Connection type", state.type);
-      console.log("Is connected?", state.isConnected);
-      setConnection(state.isConnected)
-    });
-    console.log("i renderd");
   }, [])
 
-  console.log(Connection);
 
 
 
@@ -96,12 +87,13 @@ export const MainScreen = () => {
           <ActivityIndicator size="large" color="green" style={{ alignSelf: "center", marginTop: height / 2 }} />
       }
       {
-        SetupPlayerValue === STATE_STOPPED ?
+        SetupPlayerValue === STATE_STOPPED
+          ?
           null
           :
           <CompactController />
       }
-    </View >
+    </View>
   );
 };
 

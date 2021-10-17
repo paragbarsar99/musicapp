@@ -1,21 +1,19 @@
-import React, { useState, useEffect, useCallback,useMemo } from 'react'
+import React, { useEffect, useCallback } from 'react'
 import { TouchableOpacity } from 'react-native'
 import { StyleSheet, Text, View, Image } from 'react-native'
 import Slider from '@react-native-community/slider'
 import AntDesign from 'react-native-vector-icons/AntDesign'
 import TrackPlayer, {
-    skipToPrevious,
     TrackPlayerEvents,
     STATE_BUFFERING,
-    STATE_PAUSED,
     STATE_PLAYING,
     STATE_STOPPED,
     STATE_NONE,
     useTrackPlayerProgress
 } from 'react-native-track-player'
-import { useFocusEffect, useNavigation } from '@react-navigation/native'
+import { useNavigation } from '@react-navigation/native'
 import { useDispatch, useSelector } from 'react-redux'
-import { WhereIsSeekBarAction, SongObjAction, InitialValueOfSetupPlayerAction, SetupPlayer } from '../Actions'
+import { SongObjAction, InitialValueOfSetupPlayerAction, SetupPlayer } from '../Actions'
 
 export function CompactController() {
 
@@ -24,15 +22,13 @@ export function CompactController() {
     const Navigation = useNavigation()
 
     //make instance of useSelector
-    const { Obj, SeekBar, } = useSelector(item => item);
+    const {Obj:{title, artwork, duration, artist} } = useSelector(item => item);
 
     const dispatch = useDispatch();
 
-    //get the Seekbar Value from Reducer
-    let { isSeeking, slidingValue } = SeekBar;
 
     //A Hook from trackplayer for find current position and duration for song
-    const { position, duration } = useTrackPlayerProgress();
+    const { position } = useTrackPlayerProgress();
 
 
     //getcurrentTrackdetails
@@ -127,26 +123,10 @@ export function CompactController() {
 
     /**************Progress Bar methodes*************/
 
-    //whenUserStatrSlidnig
-    function slidingStarted() {
-        dispatch(WhereIsSeekBarAction({ isSeeking: true, position: position, duration: duration }));
-    }
-
     //this function is called when the user stops sliding the seekbar
     const slidingCompleted = async value => {
         await TrackPlayer.seekTo(value * duration);
-        dispatch(WhereIsSeekBarAction({ isSeeking: false, slidingValue: value, position: position, duration: duration }));
     };
-
-    //when ever current Track position change
-    useMemo(
-        () => {
-            if (!isSeeking && duration && position) {
-                dispatch(WhereIsSeekBarAction({ slidingValue: position / duration, position: position, duration: duration }));
-            }
-        }, [position, duration]
-
-    )
 
 
     //initalLanuch effect
@@ -160,16 +140,15 @@ export function CompactController() {
         await TrackPlayer.getCurrentTrack()
             .then(async res => {
                 if (!res) return null;
-                await TrackPlayer.getTrack(res.toString()).then(res => {
-                    dispatch(SongObjAction(res));
-                });
+                await TrackPlayer.getTrack(res.toString())
+                    .then(res => {
+                        dispatch(SongObjAction(res));
+                    });
             })
             .catch(err => {
                 console.log(`ERROR from getCurrnentTrack is:${err}`)
             });
     }, []);
-
-
 
     return (
         <View style={styles.container}>
@@ -180,16 +159,13 @@ export function CompactController() {
                 minimumTrackTintColor="white"
                 maximumTrackTintColor="yellow"
                 thumbTintColor="black"
-                value={slidingValue}
-                onSlidingStart={slidingStarted}
+                value={position / duration}
                 onSlidingComplete={slidingCompleted}
+
             />
             <TouchableOpacity activeOpacity={0.7} onPress={
                 () => {
-                    Navigation.navigate("MusicPlayerScreen", {
-                        pos: position,
-                        dur: duration
-                    })
+                    Navigation.navigate("MusicPlayerScreen")
                 }}>
                 <View style={styles.controllerContainer}>
 
@@ -200,10 +176,10 @@ export function CompactController() {
                         </TouchableOpacity>
                         :
                         <>
-                            <Image style={styles.image} source={{ uri: `${Obj.artwork}` }} />
+                            <Image style={styles.image} source={{ uri: `${artwork}` }} />
                             <View style={styles.nameandtitle}>
-                                <Text style={styles.title} numberOfLines={1}>{Obj.title}</Text>
-                                <Text style={styles.artist} numberOfLines={1}>{Obj.artist}</Text>
+                                <Text style={styles.title} numberOfLines={1}>{title}</Text>
+                                <Text style={styles.artist} numberOfLines={1}>{artist}</Text>
                             </View>
                         </>
                     }
@@ -217,24 +193,25 @@ export function CompactController() {
                             <AntDesign name="stepbackward" size={30} color="white" style={{ padding: 10 }} />
                         </TouchableOpacity>
 
-                        {SetupPlayerValue === STATE_PLAYING ?
-                            <TouchableOpacity activeOpacity={0.7} onPress={() => {
-                                pause()
+                        {
+                            SetupPlayerValue === STATE_PLAYING ?
+                                <TouchableOpacity activeOpacity={0.7} onPress={() => {
+                                    pause()
 
-                            }}>
+                                }}>
 
-                                <AntDesign name="pausecircleo" size={30} color="white" style={{ padding: 10 }} />
-                            </TouchableOpacity>
+                                    <AntDesign name="pausecircleo" size={30} color="white" style={{ padding: 10 }} />
+                                </TouchableOpacity>
 
-                            :
-                            <TouchableOpacity activeOpacity={0.7} onPress={() => {
-                                if (SetupPlayerValue === STATE_STOPPED || SetupPlayerValue === STATE_NONE) {
-                                    SetUpTrackPlayer()
-                                }
-                                play()
-                            }}>
-                                <AntDesign name="play" size={30} color="white" style={{ padding: 10 }} />
-                            </TouchableOpacity>
+                                :
+                                <TouchableOpacity activeOpacity={0.7} onPress={() => {
+                                    if (SetupPlayerValue === STATE_STOPPED || SetupPlayerValue === STATE_NONE) {
+                                        SetUpTrackPlayer()
+                                    }
+                                    play()
+                                }}>
+                                    <AntDesign name="play" size={30} color="white" style={{ padding: 10 }} />
+                                </TouchableOpacity>
                         }
 
                         <TouchableOpacity activeOpacity={0.7} onPress={() => skiptonext()

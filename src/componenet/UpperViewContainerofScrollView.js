@@ -6,7 +6,7 @@ export function UpperViewContainerofScrollView({ cover_image, playlist_name, art
 
     
     const ArtistImage = () => (
-        <Animated.Image source={{ uri: cover_image || "https://cdn6.f-cdn.com/contestentries/1485199/27006121/5ca3e39ced7f1_thumb900.jpg" }} style={[styles.artistimage,
+        <Animated.Image source={{ uri: cover_image ||"https://cdn6.f-cdn.com/contestentries/1485199/27006121/5ca3e39ced7f1_thumb900.jpg" }} style={[styles.artistimage,
         {
              transform: [
                 {

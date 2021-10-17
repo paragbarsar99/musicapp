@@ -86,9 +86,8 @@ export function SearchScreen_1() {
                                             if (users[0].profile_picture) {
                                                 Navigation.navigate("ArtistSongScreen", {
                                                     id: users[0].id,
-                                                    artistname: users[0].name,
-                                                    cover_image: users[0].profile_picture['150x150'] || "https://cdn6.f-cdn.com/contestentries/1485199/27006121/5ca3e39ced7f1_thumb900.jpg"
-
+                                                    artist_name: users[0].name,
+                                                    cover_image: users[0].profile_picture['150x150'] || "https://cdn6.f-cdn.com/contestentries/1485199/27006121/5ca3e39ced7f1_thumb900.jpg",
                                                 })
                                             }
 

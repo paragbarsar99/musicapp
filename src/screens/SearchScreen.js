@@ -24,9 +24,10 @@ export function SearchScreen() {
       <StatusBar backgroundColor="#121212" />
       <SearchHeader />
       <ListOfGenerComp />
+
       {SetupPlayerValue != STATE_STOPPED ?
-        <CompactController />
-        :
+   null
+         :
         null
       }
     </View>

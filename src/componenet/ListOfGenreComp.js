@@ -1,11 +1,10 @@
 import React from 'react'
 import { TouchableOpacity } from 'react-native'
-import { Text, View, FlatList, StyleSheet, Dimensions, Image } from 'react-native'
+import { Text, View, FlatList, StyleSheet, } from 'react-native'
 import Genre from '../utils/data/Genre.json'
 import { useNavigation } from '@react-navigation/core'
 
-const width = Dimensions.get("screen").width
-const height = Dimensions.get("screen").height
+
 
 export function ListOfGenerComp() {
 

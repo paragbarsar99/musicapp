@@ -1,10 +1,10 @@
-import React, { useState, useEffect } from 'react'
-import { StyleSheet, View, Alert } from 'react-native';
+import React, { useState } from 'react'
+import { StyleSheet, View, Alert,Text } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native'
 import { createMaterialBottomTabNavigator } from '@react-navigation/material-bottom-tabs';
 import { createStackNavigator } from '@react-navigation/stack'
 import store from './store/index'
-import { Provider, useSelector } from 'react-redux'
+import { Provider } from 'react-redux'
 import Foundation from 'react-native-vector-icons/Foundation';
 import EvilIcons from 'react-native-vector-icons/EvilIcons';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
@@ -25,6 +25,15 @@ import {
 
 const Tab = createMaterialBottomTabNavigator()
 const StackTab = createStackNavigator();
+
+const TextScreen = () => (
+  <View>
+    <Text>
+      hello
+    </Text>
+  </View>
+)
+
 
 
 function AlbumWork() {
@@ -92,12 +101,7 @@ function SearchTabs() {
         name="GenreSongScreen"
         component={GenreSongScreen}
       />
-      <StackTab.Screen
-        name="AlbumWork"
-        component={AlbumWork}
-      />
-
-
+    
     </StackTab.Navigator>
   )
 }

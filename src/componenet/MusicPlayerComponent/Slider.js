@@ -2,7 +2,7 @@ import React from 'react'
 import { StyleSheet, Text, View } from 'react-native'
 import Slider from '@react-native-community/slider'
 
-export function SliderComponent({ slidingValue, slidingStarted, slidingCompleted, position, duration }) {
+export function SliderComponent({  slidingCompleted, position, duration }) {
    
    
     return (
@@ -11,10 +11,9 @@ export function SliderComponent({ slidingValue, slidingStarted, slidingCompleted
                 style={styles.progressBar}
                 minimumValue={0}
                 maximumValue={1}
-                value={slidingValue}
+                value={position/duration}
                 minimumTrackTintColor="green"
                 maximumTrackTintColor="white"
-                onSlidingStart={slidingStarted}
                 onSlidingComplete={slidingCompleted}
                 thumbTintColor="green"
             />
