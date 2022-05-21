@@ -1,4 +1,4 @@
-import { WHAT_IS_PlAYING, FETCH_ITEM, ERROR_OCCURED, SEARCH_RESULT, ALLTIME_HIT, TOP_10_ARTIST, ALBUM_SONG, ARTIST_SONG, STREAM_TRACK, SONG_OBJ, IS_INITIALIZE, SEEK_BAR, GENRE_SONG, } from '../Actions/AllActions'
+import { WHAT_IS_PlAYING, FETCH_ITEM, ERROR_OCCURED, SEARCH_RESULT, ALLTIME_HIT, TOP_10_ARTIST, ALBUM_SONG, ARTIST_SONG, STREAM_TRACK, SONG_OBJ, IS_INITIALIZE, SEEK_BAR, GENRE_SONG, HOST_NAME} from '../Actions/AllActions'
 
 const initialPlaying = {
     data: {
@@ -14,7 +14,7 @@ const initialPlaying = {
 
 const initialValue =
 {
-    error: "something went wrong",
+    error: null,
     data: null
 }
 

@@ -2,7 +2,7 @@ import React, { useEffect } from 'react'
 import { View, Text, Image, StyleSheet, StatusBar } from 'react-native'
 import { useSelector, useDispatch } from 'react-redux'
 import { LinearGradientColor } from '../componenet'
-import { InitialValueOfSetupPlayerAction } from '../Actions/FetchItemAction'
+import { InitialValueOfSetupPlayerAction,GetAHost } from '../Actions/FetchItemAction'
 import TrackPlayer from 'react-native-track-player'
 export function LoadingScreen() {
 
@@ -14,7 +14,6 @@ export function LoadingScreen() {
         TrackPlayer.getState().then(Res => {
             dispatch(InitialValueOfSetupPlayerAction(Res))
         })
-  
     }, [])
 
     return (

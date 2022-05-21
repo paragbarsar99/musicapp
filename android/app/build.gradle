@@ -123,7 +123,7 @@ def enableHermes = project.ext.react.get("enableHermes", true);
 android {
     ndkVersion rootProject.ext.ndkVersion
 
-    compileSdkVersion compileSdkVersion
+    compileSdkVersion rootProject.ext.compileSdkVersion
 
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
